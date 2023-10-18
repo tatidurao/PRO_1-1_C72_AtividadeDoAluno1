@@ -98,17 +98,7 @@ export default class TransactionScreen extends Component {
   };
 
   getStudentDetails = studentId => {
-    studentId = studentId.trim();
-    db.collection("students")
-      .where("student_id", "==", studentId)
-      .get()
-      .then(snapshot => {
-        snapshot.docs.map(doc => {
-          this.setState({
-            studentName: doc.data().student_details.student_name
-          });
-        });
-      });
+    
   };
 
   initiateBookIssue = async (bookId, studentId, bookName, studentName) => {
@@ -142,33 +132,7 @@ export default class TransactionScreen extends Component {
   };
 
   initiateBookReturn = async (bookId, studentId, bookName, studentName) => {
-    // adicionar uma transação
-    db.collection("transactions").add({
-      student_id: studentId,
-      student_name: studentName,
-      book_id: bookId,
-      book_name: bookName,
-      date: firebase.firestore.Timestamp.now().toDate(),
-      transaction_type: "return"
-    });
-    // alterar status do livro
-    db.collection("books")
-      .doc(bookId)
-      .update({
-        is_book_available: true
-      });
-    // alterar o número de livros retirados pelo aluno
-    db.collection("students")
-      .doc(studentId)
-      .update({
-        number_of_books_issued: firebase.firestore.FieldValue.increment(-1)
-      });
-
-    // atualizando estado local
-    this.setState({
-      bookId: "",
-      studentId: ""
-    });
+   
   };
 
   render() {
